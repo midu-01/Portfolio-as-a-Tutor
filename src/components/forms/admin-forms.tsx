@@ -177,9 +177,11 @@ function ItemCard({
 }
 
 export function ProfileImageUploadForm({
-  currentImageUrl
+  currentImageUrl,
+  blobConfigured
 }: {
   currentImageUrl?: string | null;
+  blobConfigured: boolean;
 }) {
   const router = useRouter();
   const [isPending, startTransition] = useTransition();
@@ -190,6 +192,12 @@ export function ProfileImageUploadForm({
       title="Profile image"
       description="Upload a polished portrait using Vercel Blob storage."
     >
+      {!blobConfigured ? (
+        <div className="rounded-[1.25rem] border border-amber-500/30 bg-amber-500/10 p-4 text-sm text-amber-700 dark:text-amber-300">
+          Image upload is disabled locally because `BLOB_READ_WRITE_TOKEN` is not set in `.env`.
+          You can still paste a public image URL in the Sections & SEO page.
+        </div>
+      ) : null}
       {currentImageUrl ? (
         <p className="text-sm text-muted-foreground">Current image: {currentImageUrl}</p>
       ) : (
@@ -215,10 +223,11 @@ export function ProfileImageUploadForm({
           type="file"
           name="file"
           accept="image/*"
+          disabled={!blobConfigured || isPending}
           onChange={(event) => setFileName(event.target.files?.[0]?.name ?? "")}
         />
         {fileName ? <p className="text-sm text-muted-foreground">{fileName}</p> : null}
-        <Button type="submit" disabled={isPending}>
+        <Button type="submit" disabled={!blobConfigured || isPending}>
           {isPending ? <Loader2 className="h-4 w-4 animate-spin" /> : <ImageUp className="h-4 w-4" />}
           Upload image
         </Button>

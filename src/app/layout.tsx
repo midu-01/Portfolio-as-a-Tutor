@@ -56,7 +56,10 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en" suppressHydrationWarning>
-      <body className={`${fontSans.variable} ${fontDisplay.variable}`}>
+      <body
+        className={`${fontSans.variable} ${fontDisplay.variable}`}
+        suppressHydrationWarning
+      >
         <AppProviders>{children}</AppProviders>
       </body>
     </html>

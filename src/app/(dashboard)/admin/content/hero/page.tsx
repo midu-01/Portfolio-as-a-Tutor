@@ -12,7 +12,10 @@ export default async function HeroContentPage() {
         title="Edit the homepage introduction"
         description="Manage the first impression visitors get, including the main summary, call-to-action buttons, and hero stats."
       />
-      <ProfileImageUploadForm currentImageUrl={data.siteSettings?.profileImageUrl} />
+      <ProfileImageUploadForm
+        currentImageUrl={data.siteSettings?.profileImageUrl}
+        blobConfigured={Boolean(process.env.BLOB_READ_WRITE_TOKEN)}
+      />
       <HeroEditorForm
         initialValues={{
           name: data.hero.name,

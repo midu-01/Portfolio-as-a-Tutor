@@ -86,10 +86,16 @@ export function ContactInquiryForm() {
         <FormError message={form.formState.errors.message?.message} />
       </div>
 
-      <Button type="submit" className="w-full sm:w-auto" disabled={isPending}>
-        {isPending ? <Loader2 className="h-4 w-4 animate-spin" /> : <SendHorizontal className="h-4 w-4" />}
-        Send inquiry
-      </Button>
+      <div className="flex justify-center">
+        <Button type="submit" className="w-full sm:w-auto" disabled={isPending}>
+          {isPending ? (
+            <Loader2 className="h-4 w-4 animate-spin" />
+          ) : (
+            <SendHorizontal className="h-4 w-4" />
+          )}
+          Send inquiry
+        </Button>
+      </div>
     </form>
   );
 }

@@ -10,6 +10,7 @@ import {
   FaqSection,
   HeroSection,
   HighlightsSection,
+  ProfileSidebarCard,
   SubjectsSection,
   TestimonialsSection,
   WhyChooseMeSection
@@ -53,6 +54,17 @@ export default async function HomePage() {
           icon: section.icon
         }))}
         socialLinks={data.socialLinks}
+        rightSidebar={
+          <ProfileSidebarCard
+            heroName={data.hero.name}
+            heroRole={data.hero.role}
+            heroBadge={data.hero.badge}
+            profileImageUrl={data.siteSettings?.profileImageUrl ?? null}
+            siteLocation={data.siteSettings?.siteLocation ?? data.contactInfo.location}
+            heroStats={data.heroStats}
+            subjects={data.subjects.map((item) => item.title)}
+          />
+        }
       >
         {data.sections.map((section) => {
           switch (section.key) {
@@ -67,7 +79,21 @@ export default async function HomePage() {
                     profileImageUrl: data.siteSettings?.profileImageUrl ?? null
                   }}
                   hero={data.hero}
-                  heroStats={data.heroStats}
+                  sidebarCard={
+                    <div className="xl:hidden">
+                      <ProfileSidebarCard
+                        heroName={data.hero.name}
+                        heroRole={data.hero.role}
+                        heroBadge={data.hero.badge}
+                        profileImageUrl={data.siteSettings?.profileImageUrl ?? null}
+                        siteLocation={
+                          data.siteSettings?.siteLocation ?? data.contactInfo.location
+                        }
+                        heroStats={data.heroStats}
+                        subjects={data.subjects.map((item) => item.title)}
+                      />
+                    </div>
+                  }
                 />
               );
             case SectionKey.ABOUT:
@@ -97,7 +123,6 @@ export default async function HomePage() {
                 <ContactSection
                   key={section.key}
                   contactInfo={data.contactInfo}
-                  socialLinks={data.socialLinks}
                   scheduleCallUrl={data.siteSettings?.scheduleCallUrl}
                 />
               );

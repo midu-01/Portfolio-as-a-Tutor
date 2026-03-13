@@ -3,7 +3,7 @@
 import type { CSSProperties, ReactNode } from "react";
 import Link from "next/link";
 import { Menu, PanelLeftClose, PanelLeftOpen, X } from "lucide-react";
-import { useEffect, useMemo, useState } from "react";
+import { useEffect, useState } from "react";
 import { AnimatePresence, motion } from "framer-motion";
 
 import { IconByName } from "@/components/icon-map";
@@ -31,13 +31,15 @@ export function PortfolioShell({
   siteName,
   siteTagline,
   sections,
-  socialLinks
+  socialLinks,
+  rightSidebar
 }: {
   children: ReactNode;
   siteName: string;
   siteTagline: string;
   sections: SidebarSection[];
   socialLinks: SocialLink[];
+  rightSidebar?: ReactNode;
 }) {
   const [isCollapsed, setIsCollapsed] = useState(false);
   const [isMobileOpen, setIsMobileOpen] = useState(false);
@@ -55,8 +57,6 @@ export function PortfolioShell({
     setIsMobileOpen(false);
   };
 
-  const socialPreview = useMemo(() => socialLinks.slice(0, 3), [socialLinks]);
-
   return (
     <div
       className="min-h-screen px-4 py-4 sm:px-6 lg:px-8"
@@ -66,11 +66,13 @@ export function PortfolioShell({
         } as CSSProperties
       }
     >
-      <div className="mx-auto max-w-[1600px] lg:grid lg:grid-cols-[var(--sidebar-width)_1fr] lg:gap-8">
+      <div className="w-full lg:grid lg:grid-cols-[var(--sidebar-width)_minmax(0,1fr)] lg:gap-8 xl:grid-cols-[var(--sidebar-width)_minmax(0,1fr)_380px]">
         <header className="sticky top-4 z-40 mb-4 flex items-center justify-between rounded-[1.75rem] border border-border/70 bg-card/85 p-3 shadow-card backdrop-blur lg:hidden">
           <div>
             <p className="font-display text-lg font-semibold">{siteName}</p>
-            <p className="text-xs text-muted-foreground">{siteTagline}</p>
+            {siteTagline ? (
+              <p className="text-xs text-muted-foreground">{siteTagline}</p>
+            ) : null}
           </div>
           <div className="flex items-center gap-2">
             <ThemeToggle />
@@ -88,23 +90,28 @@ export function PortfolioShell({
         <aside className="hidden lg:block">
           <div
             className={cn(
-              "sticky top-6 h-[calc(100vh-3rem)] overflow-hidden rounded-[2rem] border border-border/70 bg-card/88 p-4 shadow-soft backdrop-blur transition-all duration-300",
+              "scrollbar-hidden sticky top-6 flex h-[calc(100vh-3rem)] flex-col overflow-y-auto rounded-[2rem] border border-border/70 bg-card/88 p-4 shadow-soft backdrop-blur transition-all duration-300",
               isCollapsed ? "px-3" : "px-5"
             )}
           >
-            <div className="flex items-start justify-between gap-3">
-              <div className={cn("min-w-0", isCollapsed && "hidden")}>
-                <Link href="/" className="font-display text-2xl font-semibold">
-                  {siteName}
-                </Link>
-                <p className="mt-2 text-sm leading-6 text-muted-foreground">
-                  {siteTagline}
-                </p>
-              </div>
-              <div className="flex flex-col items-center gap-2">
+            <div
+              className={cn(
+                "flex gap-3",
+                isCollapsed
+                  ? "flex-col items-center justify-start"
+                  : "items-center justify-between"
+              )}
+            >
+              <div
+                className={cn(
+                  "flex min-w-0 items-center gap-3",
+                  isCollapsed ? "hidden" : "flex-1"
+                )}
+              >
                 <Button
                   variant="outline"
                   size="icon"
+                  className="h-10 w-10 rounded-2xl"
                   aria-label={isCollapsed ? "Expand sidebar" : "Collapse sidebar"}
                   onClick={() => {
                     const nextState = !isCollapsed;
@@ -121,11 +128,39 @@ export function PortfolioShell({
                     <PanelLeftClose className="h-4 w-4" />
                   )}
                 </Button>
-                <ThemeToggle />
+                <div className="min-w-0">
+                  <Link href="/" className="block truncate font-display text-2xl font-semibold">
+                    {siteName}
+                  </Link>
+                  {siteTagline ? (
+                    <p className="truncate text-sm text-muted-foreground">{siteTagline}</p>
+                  ) : null}
+                </div>
+              </div>
+              <div className="flex flex-col items-center gap-2">
+                {isCollapsed ? (
+                  <Button
+                    variant="outline"
+                    size="icon"
+                    className="h-10 w-10 rounded-2xl"
+                    aria-label={isCollapsed ? "Expand sidebar" : "Collapse sidebar"}
+                    onClick={() => {
+                      const nextState = !isCollapsed;
+                      setIsCollapsed(nextState);
+                      window.localStorage.setItem(
+                        "portfolio-sidebar-collapsed",
+                        String(nextState)
+                      );
+                    }}
+                  >
+                    <PanelLeftOpen className="h-4 w-4" />
+                  </Button>
+                ) : null}
+                <ThemeToggle className="h-10 w-10 rounded-2xl" />
               </div>
             </div>
 
-            <nav className="mt-8 space-y-2">
+            <nav className="mt-8 flex-1 space-y-0.5">
               {sections.map((section) => {
                 const isActive = activeId === section.id;
 
@@ -153,9 +188,6 @@ export function PortfolioShell({
                     </span>
                     <span className={cn("min-w-0", isCollapsed && "hidden")}>
                       <span className="block text-sm font-semibold">{section.title}</span>
-                      <span className="block truncate text-xs text-muted-foreground">
-                        {section.description}
-                      </span>
                     </span>
                   </button>
                 );
@@ -165,14 +197,19 @@ export function PortfolioShell({
             <div className={cn("mt-auto pt-6", isCollapsed && "hidden")}>
               <div className="rounded-[1.75rem] border border-border/70 bg-background/75 p-4">
                 <p className="text-xs uppercase tracking-[0.24em] text-muted-foreground">
-                  Quick Links
+                  Quick Contact
                 </p>
-                <div className="mt-4 flex flex-wrap gap-2">
-                  {socialPreview.map((item) => (
-                    <Button key={item.id} asChild size="sm" variant="outline">
-                      <a href={item.url} target="_blank" rel="noreferrer">
+                <div className="mt-4 grid grid-cols-3 gap-2">
+                  {socialLinks.map((item) => (
+                    <Button key={item.id} asChild size="icon" variant="outline" className="h-11 w-full rounded-2xl">
+                      <a
+                        href={item.url}
+                        target="_blank"
+                        rel="noreferrer"
+                        aria-label={item.label}
+                        title={item.label}
+                      >
                         <IconByName name={item.icon} className="h-4 w-4" />
-                        {item.label}
                       </a>
                     </Button>
                   ))}
@@ -191,7 +228,7 @@ export function PortfolioShell({
               exit={{ opacity: 0 }}
             >
               <motion.div
-                className="surface-glow absolute left-0 top-0 flex h-full w-[86%] max-w-sm flex-col border-r border-border p-5"
+                className="scrollbar-hidden surface-glow absolute left-0 top-0 flex h-full w-[86%] max-w-sm flex-col overflow-y-auto border-r border-border p-5"
                 initial={{ x: "-100%" }}
                 animate={{ x: 0 }}
                 exit={{ x: "-100%" }}
@@ -200,7 +237,9 @@ export function PortfolioShell({
                 <div className="flex items-start justify-between">
                   <div>
                     <p className="font-display text-2xl font-semibold">{siteName}</p>
-                    <p className="mt-2 text-sm text-muted-foreground">{siteTagline}</p>
+                    {siteTagline ? (
+                      <p className="mt-2 text-sm text-muted-foreground">{siteTagline}</p>
+                    ) : null}
                   </div>
                   <Button
                     variant="outline"
@@ -212,7 +251,7 @@ export function PortfolioShell({
                   </Button>
                 </div>
 
-                <nav className="mt-8 space-y-2">
+                <nav className="mt-8 flex-1 space-y-0.5">
                   {sections.map((section) => {
                     const isActive = activeId === section.id;
 
@@ -234,12 +273,49 @@ export function PortfolioShell({
                     );
                   })}
                 </nav>
+
+                <div className="mt-auto pt-6">
+                  <div className="rounded-[1.75rem] border border-border/70 bg-background/75 p-4">
+                    <p className="text-xs uppercase tracking-[0.24em] text-muted-foreground">
+                      Quick Contact
+                    </p>
+                    <div className="mt-4 grid grid-cols-3 gap-2">
+                      {socialLinks.map((item) => (
+                        <Button
+                          key={item.id}
+                          asChild
+                          size="icon"
+                          variant="outline"
+                          className="h-11 w-full rounded-2xl"
+                        >
+                          <a
+                            href={item.url}
+                            target="_blank"
+                            rel="noreferrer"
+                            aria-label={item.label}
+                            title={item.label}
+                          >
+                            <IconByName name={item.icon} className="h-4 w-4" />
+                          </a>
+                        </Button>
+                      ))}
+                    </div>
+                  </div>
+                </div>
               </motion.div>
             </motion.div>
           ) : null}
         </AnimatePresence>
 
         <main className="space-y-6 lg:space-y-8">{children}</main>
+
+        {rightSidebar ? (
+          <aside className="hidden xl:block">
+            <div className="scrollbar-hidden sticky top-6 h-[calc(100vh-3rem)] overflow-y-auto">
+              {rightSidebar}
+            </div>
+          </aside>
+        ) : null}
       </div>
     </div>
   );

@@ -558,6 +558,14 @@ export async function updateInquiryStatusAction(id: string, status: InquiryStatu
 export async function uploadProfileImageAction(formData: FormData) {
   await requireAdmin();
 
+  if (!process.env.BLOB_READ_WRITE_TOKEN) {
+    return {
+      success: false,
+      message:
+        "Profile image upload requires BLOB_READ_WRITE_TOKEN in .env. You can still use a direct image URL in the Sections & SEO page."
+    };
+  }
+
   const file = formData.get("file");
 
   if (!(file instanceof File) || file.size === 0) {

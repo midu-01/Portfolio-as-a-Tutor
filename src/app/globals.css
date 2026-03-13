@@ -82,6 +82,15 @@
     text-wrap: balance;
   }
 
+  .scrollbar-hidden {
+    -ms-overflow-style: none;
+    scrollbar-width: none;
+  }
+
+  .scrollbar-hidden::-webkit-scrollbar {
+    display: none;
+  }
+
   .surface-glow {
     background:
       linear-gradient(180deg, hsl(var(--card) / 0.96), hsl(var(--card) / 0.86)),

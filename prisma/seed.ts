@@ -27,10 +27,10 @@ async function main() {
     update: {},
     create: {
       id: "site-settings",
-      siteName: "Midu Mojumder",
-      siteTagline: "Dedicated and result-oriented tutor",
+      siteName: "Midu Bhai",
+      siteTagline: "Private Tutor for SSC • HSC • Admission",
       siteDescription:
-        "Dedicated and result-oriented tutor with over 5 years of experience teaching SSC, HSC, and admission-level science students. Proven success in guiding students to top results, including admissions to BUET, DU, and other leading universities.",
+        "Dedicated and result-oriented tutor with over 5 years of experience teaching SSC, HSC, and admission-level science students. Proven success in guiding students to top results, including admissions to SUST, BUET, DU, JU and other leading universities.",
       siteLocation: "Mohakhali, Dhaka, Bangladesh",
       primaryEmail: "midumojumder8@gmail.com",
       primaryPhone: "+8801794532606",
@@ -469,6 +469,27 @@ async function main() {
         url: "tel:+8801794532606",
         icon: "Phone",
         sortOrder: 2
+      },
+      {
+        label: "Facebook",
+        platform: "Facebook",
+        url: "https://www.facebook.com/MiduMojumder01",
+        icon: "Facebook",
+        sortOrder: 3
+      },
+      {
+        label: "Instagram",
+        platform: "Instagram",
+        url: "https://www.instagram.com/midu.mojumder/",
+        icon: "Instagram",
+        sortOrder: 4
+      },
+      {
+        label: "Location",
+        platform: "Location",
+        url: "https://maps.app.goo.gl/a4wSZXNhAwSnujCc8?g_st=aw",
+        icon: "MapPin",
+        sortOrder: 5
       }
     ]
   });
