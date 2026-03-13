@@ -1,0 +1,107 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  :root {
+    --background: 210 33% 98%;
+    --foreground: 222 26% 16%;
+    --card: 0 0% 100%;
+    --card-foreground: 222 26% 16%;
+    --popover: 0 0% 100%;
+    --popover-foreground: 222 26% 16%;
+    --primary: 209 100% 41%;
+    --primary-foreground: 210 40% 98%;
+    --secondary: 210 24% 93%;
+    --secondary-foreground: 222 26% 16%;
+    --muted: 214 31% 94%;
+    --muted-foreground: 215 18% 43%;
+    --accent: 197 54% 92%;
+    --accent-foreground: 222 26% 16%;
+    --destructive: 0 72% 51%;
+    --destructive-foreground: 210 40% 98%;
+    --border: 214 25% 86%;
+    --input: 214 25% 90%;
+    --ring: 209 100% 41%;
+    --radius: 1rem;
+  }
+
+  .dark {
+    --background: 222 17% 15%;
+    --foreground: 210 29% 92%;
+    --card: 222 16% 18%;
+    --card-foreground: 210 29% 92%;
+    --popover: 222 16% 18%;
+    --popover-foreground: 210 29% 92%;
+    --primary: 204 94% 68%;
+    --primary-foreground: 222 47% 11%;
+    --secondary: 222 14% 24%;
+    --secondary-foreground: 210 29% 92%;
+    --muted: 222 13% 23%;
+    --muted-foreground: 214 18% 70%;
+    --accent: 200 20% 23%;
+    --accent-foreground: 210 29% 92%;
+    --destructive: 0 63% 54%;
+    --destructive-foreground: 210 29% 92%;
+    --border: 220 13% 30%;
+    --input: 220 13% 26%;
+    --ring: 204 94% 68%;
+  }
+
+  * {
+    @apply border-border;
+  }
+
+  html {
+    scroll-behavior: smooth;
+  }
+
+  body {
+    @apply bg-background text-foreground font-sans antialiased;
+    background-image:
+      radial-gradient(circle at top left, rgba(59, 130, 246, 0.09), transparent 30%),
+      radial-gradient(circle at top right, rgba(20, 184, 166, 0.08), transparent 24%),
+      linear-gradient(180deg, rgba(255, 255, 255, 0.45), transparent 100%);
+    min-height: 100vh;
+  }
+
+  .dark body {
+    background-image:
+      radial-gradient(circle at top left, rgba(56, 139, 253, 0.12), transparent 30%),
+      radial-gradient(circle at top right, rgba(45, 212, 191, 0.08), transparent 26%),
+      linear-gradient(180deg, rgba(30, 41, 59, 0.24), transparent 100%);
+  }
+
+  ::selection {
+    background: hsl(var(--primary) / 0.18);
+  }
+}
+
+@layer utilities {
+  .text-balance {
+    text-wrap: balance;
+  }
+
+  .surface-glow {
+    background:
+      linear-gradient(180deg, hsl(var(--card) / 0.96), hsl(var(--card) / 0.86)),
+      radial-gradient(circle at top left, hsl(var(--primary) / 0.12), transparent 30%);
+  }
+
+  .section-frame {
+    @apply rounded-[2rem] border border-border/70 bg-card/80 shadow-card backdrop-blur;
+  }
+
+  .section-divider {
+    background: linear-gradient(
+      90deg,
+      transparent,
+      hsl(var(--border)),
+      transparent
+    );
+  }
+
+  .interactive {
+    @apply transition duration-200 ease-out;
+  }
+}

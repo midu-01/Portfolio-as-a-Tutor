@@ -1,0 +1,260 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+enum SectionKey {
+  HERO
+  ABOUT
+  SUBJECTS
+  EXPERIENCE
+  ACHIEVEMENTS
+  WHY_CHOOSE_ME
+  EDUCATION
+  HIGHLIGHTS
+  TESTIMONIALS
+  FAQ
+  CONTACT
+}
+
+enum InquiryStatus {
+  NEW
+  REVIEWED
+  RESPONDED
+}
+
+model AdminUser {
+  id           String   @id @default(cuid())
+  email        String   @unique
+  name         String
+  passwordHash String
+  image        String?
+  role         String   @default("ADMIN")
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime @updatedAt
+}
+
+model SiteSettings {
+  id                String        @id @default("site-settings")
+  siteName          String
+  siteTagline       String
+  siteDescription   String        @db.Text
+  siteUrl           String?
+  siteLocation      String
+  primaryEmail      String
+  primaryPhone      String
+  whatsappNumber    String
+  profileImageUrl   String?
+  ogImageUrl        String?
+  scheduleCallUrl   String?
+  seoTitle          String
+  seoDescription    String        @db.Text
+  themeAccent       String        @default("blue")
+  yearsExperience   String
+  studentLevelLabel String
+  resultHighlight   String
+  createdAt         DateTime      @default(now())
+  updatedAt         DateTime      @updatedAt
+  socialLinks       SocialLink[]
+  sections          SiteSection[]
+}
+
+model SiteSection {
+  id             String      @id @default(cuid())
+  siteSettingsId String      @default("site-settings")
+  key            SectionKey  @unique
+  title          String
+  description    String?
+  isVisible      Boolean     @default(true)
+  sortOrder      Int         @default(0)
+  createdAt      DateTime    @default(now())
+  updatedAt      DateTime    @updatedAt
+  siteSettings   SiteSettings @relation(fields: [siteSettingsId], references: [id], onDelete: Cascade)
+}
+
+model HeroSection {
+  id                String     @id @default("hero-section")
+  name              String
+  role              String
+  summary           String     @db.Text
+  badge             String
+  primaryCtaLabel   String
+  primaryCtaHref    String
+  secondaryCtaLabel String
+  secondaryCtaHref  String
+  supportText       String?
+  createdAt         DateTime   @default(now())
+  updatedAt         DateTime   @updatedAt
+  heroStats         HeroStat[]
+}
+
+model HeroStat {
+  id            String      @id @default(cuid())
+  heroSectionId String      @default("hero-section")
+  value         String
+  label         String
+  sortOrder     Int         @default(0)
+  isVisible     Boolean     @default(true)
+  createdAt     DateTime    @default(now())
+  updatedAt     DateTime    @updatedAt
+  heroSection   HeroSection @relation(fields: [heroSectionId], references: [id], onDelete: Cascade)
+}
+
+model AboutSection {
+  id                  String   @id @default("about-section")
+  title               String
+  summary             String   @db.Text
+  conceptualApproach  String
+  guardianCommunication String
+  teachingEnvironment String
+  createdAt           DateTime @default(now())
+  updatedAt           DateTime @updatedAt
+}
+
+model Subject {
+  id          String   @id @default(cuid())
+  title       String
+  icon        String
+  description String   @db.Text
+  accent      String
+  isVisible   Boolean  @default(true)
+  sortOrder   Int      @default(0)
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+}
+
+model Experience {
+  id          String            @id @default(cuid())
+  title       String
+  organization String
+  period      String
+  summary     String            @db.Text
+  isVisible   Boolean           @default(true)
+  sortOrder   Int               @default(0)
+  createdAt   DateTime          @default(now())
+  updatedAt   DateTime          @updatedAt
+  points      ExperiencePoint[]
+}
+
+model ExperiencePoint {
+  id           String     @id @default(cuid())
+  experienceId String
+  content      String
+  sortOrder    Int        @default(0)
+  createdAt    DateTime   @default(now())
+  updatedAt    DateTime   @updatedAt
+  experience   Experience @relation(fields: [experienceId], references: [id], onDelete: Cascade)
+}
+
+model Achievement {
+  id          String   @id @default(cuid())
+  title       String
+  description String   @db.Text
+  metric      String?
+  isVisible   Boolean  @default(true)
+  sortOrder   Int      @default(0)
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+}
+
+model WhyChooseMeItem {
+  id          String   @id @default(cuid())
+  title       String
+  description String   @db.Text
+  icon        String
+  isVisible   Boolean  @default(true)
+  sortOrder   Int      @default(0)
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+}
+
+model Education {
+  id          String   @id @default(cuid())
+  institution String
+  degree      String
+  period      String
+  score       String
+  location    String?
+  note        String?
+  isVisible   Boolean  @default(true)
+  sortOrder   Int      @default(0)
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+}
+
+model Highlight {
+  id          String   @id @default(cuid())
+  title       String
+  description String   @db.Text
+  icon        String
+  isVisible   Boolean  @default(true)
+  sortOrder   Int      @default(0)
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+}
+
+model Testimonial {
+  id          String   @id @default(cuid())
+  name        String
+  role        String
+  quote       String   @db.Text
+  result      String?
+  rating      Int      @default(5)
+  isVisible   Boolean  @default(true)
+  sortOrder   Int      @default(0)
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+}
+
+model ContactInfo {
+  id              String   @id @default("contact-info")
+  email           String
+  phone           String
+  whatsapp        String
+  location        String
+  formTitle       String
+  formDescription String   @db.Text
+  availability    String
+  createdAt       DateTime @default(now())
+  updatedAt       DateTime @updatedAt
+}
+
+model FAQ {
+  id        String   @id @default(cuid())
+  question  String
+  answer    String   @db.Text
+  isVisible Boolean  @default(true)
+  sortOrder Int      @default(0)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model SocialLink {
+  id             String       @id @default(cuid())
+  siteSettingsId String       @default("site-settings")
+  label          String
+  platform       String
+  url            String
+  icon           String
+  isVisible      Boolean      @default(true)
+  sortOrder      Int          @default(0)
+  createdAt      DateTime     @default(now())
+  updatedAt      DateTime     @updatedAt
+  siteSettings   SiteSettings @relation(fields: [siteSettingsId], references: [id], onDelete: Cascade)
+}
+
+model Inquiry {
+  id        String        @id @default(cuid())
+  name      String
+  email     String
+  phone     String?
+  subject   String?
+  message   String        @db.Text
+  status    InquiryStatus @default(NEW)
+  createdAt DateTime      @default(now())
+  updatedAt DateTime      @updatedAt
+}
