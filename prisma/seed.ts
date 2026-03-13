@@ -24,11 +24,14 @@ async function main() {
 
   await prisma.siteSettings.upsert({
     where: { id: "site-settings" },
-    update: {},
+    update: {
+      siteName: "Midu's Coaching",
+      siteTagline: ""
+    },
     create: {
       id: "site-settings",
-      siteName: "Midu Bhai",
-      siteTagline: "Private Tutor for SSC • HSC • Admission",
+      siteName: "Midu's Coaching",
+      siteTagline: "",
       siteDescription:
         "Dedicated and result-oriented tutor with over 5 years of experience teaching SSC, HSC, and admission-level science students. Proven success in guiding students to top results, including admissions to SUST, BUET, DU, JU and other leading universities.",
       siteLocation: "Mohakhali, Dhaka, Bangladesh",

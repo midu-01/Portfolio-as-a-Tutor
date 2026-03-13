@@ -15,7 +15,7 @@ export default async function SectionSettingsPage() {
       <SiteSettingsEditorForm
         initialValues={{
           siteName: data.siteSettings?.siteName ?? "Midu Mojumder",
-          siteTagline: data.siteSettings?.siteTagline ?? "Dedicated and result-oriented tutor",
+          siteTagline: data.siteSettings?.siteTagline ?? "",
           siteDescription: data.siteSettings?.siteDescription ?? "",
           siteUrl: data.siteSettings?.siteUrl ?? "",
           siteLocation: data.siteSettings?.siteLocation ?? "",

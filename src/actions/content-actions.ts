@@ -462,13 +462,14 @@ export async function updateFaqsAction(input: FaqsFormInput) {
 export async function updateSiteSettingsAction(input: SiteSettingsInput) {
   await requireAdmin();
   const data = siteSettingsSchema.parse(input);
+  const siteTagline = data.siteTagline ?? "";
 
   await prisma.$transaction(async (tx) => {
     await tx.siteSettings.upsert({
       where: { id: "site-settings" },
       update: {
         siteName: data.siteName,
-        siteTagline: data.siteTagline,
+        siteTagline,
         siteDescription: data.siteDescription,
         siteUrl: data.siteUrl || null,
         siteLocation: data.siteLocation,
@@ -488,7 +489,7 @@ export async function updateSiteSettingsAction(input: SiteSettingsInput) {
       create: {
         id: "site-settings",
         siteName: data.siteName,
-        siteTagline: data.siteTagline,
+        siteTagline,
         siteDescription: data.siteDescription,
         siteUrl: data.siteUrl || null,
         siteLocation: data.siteLocation,
@@ -588,7 +589,7 @@ export async function uploadProfileImageAction(formData: FormData) {
     create: {
       id: "site-settings",
       siteName: "Midu Mojumder",
-      siteTagline: "Dedicated and result-oriented tutor",
+      siteTagline: "",
       siteDescription: "Premium academic tutoring portfolio",
       siteLocation: "Mohakhali, Dhaka, Bangladesh",
       primaryEmail: "midumojumder8@gmail.com",

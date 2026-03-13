@@ -160,7 +160,7 @@ export const siteSectionSchema = z.object({
 
 export const siteSettingsSchema = z.object({
   siteName: z.string().min(2),
-  siteTagline: z.string().min(2),
+  siteTagline: z.string().optional().or(z.literal("")),
   siteDescription: z.string().min(20),
   siteUrl: z.string().url().optional().or(z.literal("")),
   siteLocation: z.string().min(4),

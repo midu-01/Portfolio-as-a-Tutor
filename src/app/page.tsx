@@ -46,7 +46,7 @@ export default async function HomePage() {
       />
       <PortfolioShell
         siteName={data.siteSettings?.siteName ?? data.hero.name}
-        siteTagline={data.siteSettings?.siteTagline ?? data.hero.role}
+        siteTagline={data.siteSettings?.siteTagline ?? ""}
         sections={data.sections.map((section) => ({
           id: section.sectionId,
           title: section.title,
