@@ -113,4 +113,61 @@
   .interactive {
     @apply transition duration-200 ease-out;
   }
+
+  .assistant-markdown {
+    @apply space-y-3 text-sm leading-6;
+  }
+
+  .assistant-markdown h1,
+  .assistant-markdown h2,
+  .assistant-markdown h3,
+  .assistant-markdown h4 {
+    @apply font-display font-semibold tracking-tight text-foreground;
+  }
+
+  .assistant-markdown h1 {
+    @apply text-xl;
+  }
+
+  .assistant-markdown h2 {
+    @apply text-lg;
+  }
+
+  .assistant-markdown h3,
+  .assistant-markdown h4 {
+    @apply text-base;
+  }
+
+  .assistant-markdown p {
+    @apply text-sm leading-6 text-foreground;
+  }
+
+  .assistant-markdown ul,
+  .assistant-markdown ol {
+    @apply ml-5 space-y-1;
+  }
+
+  .assistant-markdown ul {
+    list-style: disc;
+  }
+
+  .assistant-markdown ol {
+    list-style: decimal;
+  }
+
+  .assistant-markdown li {
+    @apply text-sm leading-6;
+  }
+
+  .assistant-markdown pre {
+    @apply overflow-x-auto rounded-2xl border border-border/70 bg-muted/80 p-3 text-xs leading-6 text-foreground;
+  }
+
+  .assistant-markdown blockquote {
+    @apply border-l-2 border-primary/30 pl-4 text-muted-foreground;
+  }
+
+  .assistant-markdown hr {
+    @apply border-border/70;
+  }
 }

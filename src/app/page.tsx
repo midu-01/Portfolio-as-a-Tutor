@@ -17,6 +17,7 @@ import {
 } from "@/components/portfolio/portfolio-sections";
 import { getHomepageData } from "@/lib/data";
 import { absoluteUrl } from "@/lib/utils";
+import { TutorAssistant } from "@/components/portfolio/tutor-assistant";
 
 export const dynamic = "force-dynamic";
 
@@ -131,6 +132,7 @@ export default async function HomePage() {
           }
         })}
       </PortfolioShell>
+      <TutorAssistant />
     </>
   );
 }

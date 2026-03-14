@@ -62,6 +62,7 @@ This project includes two major parts:
 - FAQ and testimonial management
 - Profile image URL support
 - Optional Vercel Blob upload support
+- Optional floating AI assistant for portfolio Q&A
 
 ## Tech Stack
 
@@ -119,16 +120,26 @@ Create a local `.env` file from `.env.example`.
 - `NEXT_PUBLIC_APP_URL`
 - `ADMIN_EMAIL`
 - `ADMIN_PASSWORD`
+- `GROQ_API_KEY` if you want the AI assistant to answer visitor questions with Groq's free OpenAI-compatible API
 
 ### Optional
 
 - `BLOB_READ_WRITE_TOKEN`
+- `GROQ_MODEL` defaults to `openai/gpt-oss-120b`
+- `GROQ_BASE_URL` defaults to `https://api.groq.com/openai/v1`
+- `OPENAI_MODEL` defaults to `gpt-5-mini`
 
 If `BLOB_READ_WRITE_TOKEN` is not provided:
 
 - dashboard image upload is disabled
 - you can still use a direct image URL in the admin settings
 - the homepage can also fall back to a local image inside `public/profile`
+
+If neither `GROQ_API_KEY` nor `OPENAI_API_KEY` is provided:
+
+- the AI assistant launcher still appears
+- chat requests return a friendly configuration message
+- set `GROQ_API_KEY` in local `.env` and in Vercel to enable live answers
 
 ## Local Development
 
@@ -311,6 +322,7 @@ This project is production-structured and already includes:
 - SEO setup
 - responsive sidebars
 - local image fallback
+- floating AI assistant UI with portfolio-aware backend route
 
 ## License
 
